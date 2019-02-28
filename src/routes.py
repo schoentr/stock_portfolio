@@ -1,6 +1,9 @@
 from . import app
-from flask import render_template
+# from .models import db, Stocks
+from flask import render_template, request
+import json
 import os
+import requests
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -15,11 +18,21 @@ def poster():
 @app.route('/search', methods=['POST'])
 def stock_search():
     stock_sym = request.form.get('stock')
-    url = '{}?token={}&symbols{}'.format(os.environ.get('API_URL'), os.environ.get('API_KEY'),stock_sym)
+    url ='{}{}/quote?token={}'.format(os.environ.get('API_URL'),stock_sym, os.environ.get('API_KEY'))
 
-    return url
+    response = requests.get(url)
+    data = json.loads(response.text)
 
-@app.route('/stocks')
+    return str(data)
+#     try:
+#         stock = Stocks(company_sym=data['symbol'],name=data[companyName],latest_price=data[latestPrice] )
+#         db.session.add(stock)
+#         db.session.commit()
+#     except:
+#         (DBAIPError, IntegrityError)
+#     return redirect (url_for('.portfolio'))
+
+@app.route('/portfolio')
 def show_stocks():
-    return render_template('stocks.html')
+    return render_template('portfolio.html')
 
