@@ -8,6 +8,11 @@ verify_ssl = true
 [packages]
 flask = "*"
 httpie = "*"
+flask-migrate = "*"
+flask-sqlalchemy = "*"
+
+psycopg2-binary = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"

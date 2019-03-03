@@ -1,9 +1,10 @@
 from . import app
-# from .models import db, Stocks
-from flask import render_template, request
+from .models import db, Company
+from flask import render_template, request, redirect, url_for
 import json
 import os
 import requests
+from sqlalchemy.exc import DBAPIError, IntegrityError
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -11,7 +12,7 @@ def hello():
 
 
 @app.route('/search', methods=['GET'])
-def poster():
+def search():
     return render_template('search.html')
 
 
@@ -23,16 +24,18 @@ def stock_search():
     response = requests.get(url)
     data = json.loads(response.text)
 
-    return str(data)
-#     try:
-#         stock = Stocks(company_sym=data['symbol'],name=data[companyName],latest_price=data[latestPrice] )
-#         db.session.add(stock)
-#         db.session.commit()
-#     except:
-#         (DBAIPError, IntegrityError)
-#     return redirect (url_for('.portfolio'))
+    # return str(data)
+    try:
+        company = Company(company_sym=data['symbol'], name=data['companyName'], latest_price=data['latestPrice'] )
+        db.session.add(company)
+        db.session.commit()
+    except:
+        (DBAPIError, IntegrityError)
+    return redirect (url_for('.portfolio'))
 
 @app.route('/portfolio')
-def show_stocks():
+def portfolio():
+    # return render_template('home.html')
+    # print(Company.query.all())
     return render_template('portfolio.html')
-
+    # pass
