@@ -10,9 +10,9 @@ flask = "*"
 httpie = "*"
 flask-migrate = "*"
 flask-sqlalchemy = "*"
-
 psycopg2-binary = "*"
 python-dotenv = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.7"
