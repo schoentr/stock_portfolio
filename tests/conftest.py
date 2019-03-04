@@ -1,4 +1,4 @@
-rom src.models import db as _db
+from src.models import db as _db
 from src import app as _app
 import pytest
 import os

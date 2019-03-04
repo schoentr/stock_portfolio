@@ -31,9 +31,9 @@ def stock_search():
             company_sym=data['symbol'], name=data['companyName'], latest_price=data['latestPrice'])
         db.session.add(company)
         db.session.commit()
-    except:
-        (DBAPIError, IntegrityError)
-    return redirect(url_for('.portfolio'))
+    except (DBAPIError, IntegrityError):
+         abort(400)
+    return redirect(url_for('.portfolio'))  
 
 
 @app.route('/portfolio')
