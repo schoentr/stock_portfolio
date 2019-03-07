@@ -1,0 +1,27 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>HELLO PREVIEW</h3>
+<div class="container">
+  <p>Company: {{ name }}</p>
+  <p>Symbol: {{ symbol }}</p>
+
+
+<form action="{{ url_for(".preview_company") }}" method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+      <!-- class= hidden removed from div -->
+      {{ form.company_sym.label }}{{ form.company_sym(size=20) }}
+      {{ form.name.label }}{{ form.name(size=20) }}
+      {{ form.website.label }}{{ form.website(size=20) }}
+      {{ form.industry.label }}{{ form.industry(size=20) }}
+      {{ form.sector.label }}{{ form.sector(size=20) }}
+
+    </div>
+    {{ form.portfolio.label }}{{ form.portfolio()}}
+    <input type="submit" value="Go">
+  </form>
+</div>
+{% endblock %}
