@@ -7,8 +7,11 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+requests = "*"
 httpie = "*"
 flask-migrate = "*"
+gunicorn = "*"
+flask-wtf = "*"
 flask-sqlalchemy = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
@@ -17,3 +20,4 @@ pytest = "*"
 
 [requires]
 python_version = "3.7"
+
