@@ -1,17 +1,18 @@
 from . import app
 from .models import db, Company, Portfolio
-from flask import render_template, request, redirect, url_for, session, flash
+from flask import render_template, request, redirect, url_for, session, flash,g
 from .forms import StockForm, CompanyAddForm, PortfolioCreateForm
 import json
 import os
 import requests
 from sqlalchemy.exc import DBAPIError, IntegrityError
+from .auth import app
 
 @app.add_template_global
 def get_portfolio():
     """
     """
-    return Portfolio.query.all()
+    return Portfolio.query.filter_by(g.user.id).all()
 
 @app.route('/', methods=['GET'])
 def home():
@@ -19,6 +20,7 @@ def home():
 
 
 @app.route('/search', methods=['GET', 'POST'])
+@login_required
 def stock_search():
     form = StockForm()
     if form.validate_on_submit():
@@ -39,6 +41,7 @@ def stock_search():
 
 
 @app.route('/preview', methods=['GET', 'POST'])
+@login_required
 def preview_company():
     """
     """
