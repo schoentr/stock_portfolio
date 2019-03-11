@@ -42,5 +42,4 @@ class TestClass:
         """ tests that /search post route gives correct status"""
         rv = app.test_client().post('/search', data={'stock': 'GE'}, follow_redirects=True)
         assert rv.status_code == 200
-
-class TestBaseRoutes:
+        
