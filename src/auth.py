@@ -12,6 +12,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwags):
         if g.user is None:
+            # import pdb; pdb.set_trace()
             abort(404)
         return view(**kwags)
     return wrapped_view
@@ -33,6 +34,7 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user=User.query.get(user_id)
+
 @app.route('/register',methods=['GET','POST'])
 def register():
     """
@@ -42,6 +44,7 @@ def register():
         email= form.data['email']
         password= form.data['password']
         error=None
+
         if not email or not password:
             error ='Invalid email or password'
         if User.query.filter_by(email=email).first() is  not None:
@@ -57,7 +60,7 @@ def register():
 
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
     form = AuthForm()
     if form. validate_on_submit():
@@ -68,9 +71,9 @@ def login():
         if user is None or not User.check_password_hash(user,password):
             error= 'Invalid username or password.'
         if error is None:
-            sesson.clear()
-            sessoin['user_id']= user.id
-            return redirect(url_for('.portfolio'))
+            session.clear()
+            session['user_id']= user.id
+            return redirect(url_for('.company_detail'))
         flash(error)
     return render_template('auth/login.html',form=form)
 

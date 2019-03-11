@@ -4,6 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
+pytest-watch = "*"
+pytest-cov = "*"
+v = {editable = true,version = "*"}
 
 [packages]
 flask = "*"
@@ -17,7 +21,7 @@ psycopg2-binary = "*"
 python-dotenv = "*"
 autopep8 = "*"
 pytest = "*"
+passlib = "*"
 
 [requires]
 python_version = "3.7"
-
