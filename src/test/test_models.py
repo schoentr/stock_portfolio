@@ -6,7 +6,7 @@ class TestCompanyModel:
     def test_create_company(self, company):
         """
         """
-        assert comapny.id > 0
+        assert company.id > 0
 
     def test_company_name(self, company):
         """
@@ -16,7 +16,7 @@ class TestCompanyModel:
     def test_company_symbol(self, company):
         """
         """
-        assert company.symbol == 'MSFT'
+        assert company.company_sym == 'MSFT'
 
     def test_company_portfolio_id(self, company):
         """
@@ -24,23 +24,23 @@ class TestCompanyModel:
         assert company.portfolio_id > 0
 
 
-class TestCategoryModel:
+class TestPortfolioModel:
     """
     """
-    def test_create_category(self, category):
+    def test_create_portfolio(self, portfolio):
         """
         """
-        assert category.id > 0
+        assert portfolio.id > 0
 
-    def test_category_name(self, category):
+    def test_portfolio_name(self, portfolio):
         """
         """
-        assert category.name is not None
+        assert portfolio.name is not None
 
-    def test_category_user_id(self, category):
+    def test_portfolio_user_id(self, portfolio):
         """
         """
-        assert category.user_id > 0
+        assert portfolio.id > 0
 
 
 class TestUserModel:
@@ -54,10 +54,10 @@ class TestUserModel:
     def test_user_email(self, user):
         """
         """
-        assert user.email == 'default@example.com'
+        assert user.email == 'default@domain.com'
 
     def test_user_check_password(self, user):
         """
         """
         from src.models import User
-        assert User.check_password_hash(user, 'secret')
+        assert User.check_password_hash(user, 'password')

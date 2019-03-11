@@ -12,6 +12,7 @@ def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwags):
         if g.user is None:
+            # import pdb; pdb.set_trace()
             abort(404)
         return view(**kwags)
     return wrapped_view

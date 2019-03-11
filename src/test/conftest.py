@@ -45,7 +45,7 @@ def session(db, request):
     connection= db.engine.connect()
     transaction = connection.begin()
 
-    options = dict(biund=connection, binds = {})
+    options = dict(bind=connection, binds = {})
     session = db.create_scoped_session(options=options)
 
     db.session = session
@@ -74,23 +74,33 @@ def user(session):
     """
     """
     user = User(email='default@domain.com', password='password')
-
     session.add(user)
     session.commit()
     return user
 
 @pytest.fixture()
-def authenticated_client(client, user):
+def authenticated_client(client, user, session):
     """
     """
-    portfolio = Portfolio(name = 'Default', user_id = user.id)
+    client.post(
+        '/login',
+        data={'email': user.email, 'password': 'password'},
+        follow_redirects=True,
+    )
+    return client
+
+@pytest.fixture()
+def portfolio(session,user):
+    # company = Company(name = 'Default',  portfolio_id =authenticated_client.id,company_sym = 'MSFT', website = 'www.microsoft.com', sector = 'TECH', industry = 'PROGRAMMING')
+    portfolio= Portfolio(name= 'Default', user_id=user.id)
     session.add(portfolio)
     session.commit()
     return portfolio
 
 @pytest.fixture()
-def company(session,authenticated_client):
-    company = Company(name = 'Microsoft',  portfolio_id =authenticated_client.id,company_sym = 'MSFT', website = 'www.microsoft.com', sector = 'TECH', industry = 'PROGRAMMING')
+def company(session,portfolio):
+    company = Company(name = 'Microsoft',  portfolio_id =portfolio.id,company_sym = 'MSFT', website = 'www.microsoft.com', sector = 'TECH', industry = 'PROGRAMMING')
     session.add(company)
     session.commit()
     return company
+
