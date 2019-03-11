@@ -64,7 +64,7 @@ def client(app, db, session):
     """
     client = app.test_client()
     ctx = app.app_context()
-    cts.push()
+    ctx.push()
 
     yield client
     ctx.pop()
@@ -73,7 +73,7 @@ def client(app, db, session):
 def user(session):
     """
     """
-    user = User(email= 'default@domain.com', password = 'password')
+    user = User(email='default@domain.com', password='password')
 
     session.add(user)
     session.commit()
@@ -89,8 +89,8 @@ def authenticated_client(client, user):
     return portfolio
 
 @pytest.fixture()
-def company(session, portfolio):
-    company = Company(name = 'Microsoft',  portfolio_id ='portfolios.id',company_sym = 'MSFT', website = 'www.microsoft.com', sector = 'TECH', industry = 'PROGRAMMING')
+def company(session,authenticated_client):
+    company = Company(name = 'Microsoft',  portfolio_id =authenticated_client.id,company_sym = 'MSFT', website = 'www.microsoft.com', sector = 'TECH', industry = 'PROGRAMMING')
     session.add(company)
     session.commit()
     return company
