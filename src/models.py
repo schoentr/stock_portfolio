@@ -35,3 +35,23 @@ class Portfolio(db.Model):
 
     def __repr__(self):
         return '<Portfolio {}>'.format(self.name)
+
+class User(db.Model):
+    __tablename__='users'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(256), index=True, nullable=False, unique=True)
+    password = db.Column(db.String(256), nullable=False )
+    companies =db.relationship('Company', backref='user')
+
+    def __repr__(self):
+        return '<User {}'.format(self.email)
+
+    def __init__(self,email,raw_password):
+        self.email = email
+        self.password_hash = sha256_crypt.hash(raw_password)
+    @classmethod
+    def check_password_hash(cls,user,raw_password):
+        if user is not None:
+            if sha256_crypt.verify(raw_password,user.password):
+                return True
+        return False
