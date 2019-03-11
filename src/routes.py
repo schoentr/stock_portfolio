@@ -6,13 +6,13 @@ import json
 import os
 import requests
 from sqlalchemy.exc import DBAPIError, IntegrityError
-from .auth import app
+from .auth import login_required
 
 @app.add_template_global
 def get_portfolio():
     """
     """
-    return Portfolio.query.filter_by(g.user.id).all()
+    return Portfolio.query.filter_by(user_id=g.user.id).all()
 
 @app.route('/', methods=['GET'])
 def home():
@@ -86,6 +86,7 @@ def preview_company():
         industry=form_context['industry'],
     )
 @app.route('/porfolio', methods=['GET','POST'])
+@login_required
 def company_detail():
     """
     """
@@ -93,7 +94,8 @@ def company_detail():
 
     if form.validate_on_submit():
         try:
-            portfolio = Portfolio(name=form.data['name'])
+            portfolio = Portfolio(name=form.data['name'],
+            user_id = g.user.id)
             db.session.add(portfolio)
             db.session.commit()
         except IntegrityError as e:
